@@ -1,36 +1,29 @@
-var hamburgerBtn = document.querySelector('.hamburger-btn')
-var hamburgerMenu = document.querySelector('.hamburger-menu')
-var openMenu = document.querySelector('main-menu')
-var closeMenu = document.querySelector('main-menu')
+const hamburgerBtn = document.querySelector('.hamburger-btn');
+const hamburgerMenu = document.querySelector('.hamburger-menu');
 
-function openMenu() {
-    hamburgerMenu.classList.add('show-menu')
-    hamburgerBtn.setAttribute('aria-expanded', true)
+function toggleMenu() {
+  const isOpen = hamburgerMenu.classList.contains('show-menu');
+  hamburgerMenu.classList.toggle('show-menu');
+  hamburgerBtn.setAttribute('aria-expanded', !isOpen);
 }
 
 function closeMenu() {
-    document.activeElement.blur()
-    hamburgerMenu.classList.remove('show-menu')
-    hamburgerBtn.setAttribute('aria-expanded', false)
+  hamburgerMenu.classList.remove('show-menu');
+  hamburgerBtn.setAttribute('aria-expanded', 'false');
+  hamburgerBtn.focus();
+}
+
+hamburgerBtn.addEventListener('click', toggleMenu);
+
+document.addEventListener('click', (event) => {
+  const isOutside = !event.target.closest('.hamburger-menu') && !event.target.closest('.hamburger-btn');
+  if (isOutside && hamburgerMenu.classList.contains('show-menu')) {
+    closeMenu();
   }
+});
 
-launchBtn.onclick = openMenu
-
-closeBtn.onclick = closeMenu
-
-document.onkeyup = function(e) {
-    if (e.key === 'Escape')
-        closeMenu()
-    if (
-        e.key === 'Tab' &&
-        !modal.contains(document.activeElement)
-    ) {
-        closeBtn.focus()
-    }
-}
-
-menu.onclick = function (e) {
-    if (!hamburgerMenu.contains(e.target)) {
-        closeMenu()
-    }
-}
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && hamburgerMenu.classList.contains('show-menu')) {
+    closeMenu();
+  }
+});
